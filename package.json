@@ -1,5 +1,5 @@
 {
-  "name": "solidify",
+  "name": "granito",
   "version": "0.1.0",
   "description": "Type-safe storage hooks for SolidJS applications",
   "main": "dist/index.js",
@@ -30,6 +30,6 @@
     "localStorage",
     "sessionStorage"
   ],
-  "author": "Solidify",
+  "author": "granito",
   "license": "MIT"
 }
