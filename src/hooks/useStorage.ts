@@ -12,19 +12,18 @@ type StorageProps<
   TKey extends SchemaKeys<TSchema>
 > = {
   key: TKey;
-  initialValue: TSchema[TKey];
 };
 
 export function createStorageSchema<T extends StorageSchema>(
-  storageType: StorageType
+  storageType: StorageType,
+  initialSchema: T
 ) {
   const storageObject = storageType === 'local' ? localStorage : sessionStorage;
   const signalStore =
     storageType === 'local' ? localStorageSignals : sessionStorageSignals;
 
   return function useTypedStorage<TKey extends SchemaKeys<T>>({
-    key,
-    initialValue
+    key
   }: StorageProps<T, TKey>): readonly [
     () => T[TKey],
     (value: T[TKey]) => void
@@ -34,13 +33,13 @@ export function createStorageSchema<T extends StorageSchema>(
       const initialStorageValue = (() => {
         try {
           const item = storageObject.getItem(key);
-          return item ? JSON.parse(item) : initialValue;
+          return item ? JSON.parse(item) : initialSchema[key] ?? undefined;
         } catch (error) {
           console.warn(
             `Error reading ${key} from ${storageType}Storage:`,
             error
           );
-          return initialValue;
+          return initialSchema[key] ?? undefined;
         }
       })();
 
@@ -103,17 +102,3 @@ export function getActiveSignals(storageType?: StorageType) {
 
   return signals;
 }
-
-// Example usage with static schema
-type ExampleSchema = {
-  theme: 'light' | 'dark';
-  userId: number;
-  preferences: {
-    notifications: boolean;
-    language: string;
-  };
-};
-
-// Create typed storage hooks for different storage types
-export const useLocalStorage = createStorageSchema<ExampleSchema>('local');
-export const useSessionStorage = createStorageSchema<ExampleSchema>('session');

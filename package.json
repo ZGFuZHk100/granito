@@ -1,6 +1,6 @@
 {
   "name": "granito",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Type-safe storage hooks for SolidJS applications",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,6 +13,10 @@
     "build": "tsup",
     "prepare": "yarn build"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
   "peerDependencies": {
     "solid-js": "^1.0.0"
   },
