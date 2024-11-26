@@ -15,4 +15,5 @@ export type SignalStoreEntry<T> = {
   value: () => T;
   setValue: (value: T) => void;
   subscribers: number;
+  eventListeners: Set<(event: StorageEvent) => void>;
 };
